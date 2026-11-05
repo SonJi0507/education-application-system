@@ -14,4 +14,11 @@ def course_list(request: HttpRequest) -> HttpResponse:
 
 def course_detail(request: HttpRequest, slug: str) -> HttpResponse:
     course = get_object_or_404(Course.objects.featured(), slug=slug)
-    return render(request, "catalog/landing.html", {"course": course})
+    return render(
+        request,
+        "catalog/landing.html",
+        {
+            "course": course,
+            "can_apply": course.recruitment_status == Course.RecruitmentStatus.OPEN,
+        },
+    )

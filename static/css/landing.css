@@ -191,7 +191,6 @@ h3 {
 
 .section-heading p,
 .curriculum p,
-.empty .summary,
 .site-footer p {
   margin: 0;
   color: var(--muted);
@@ -231,17 +230,6 @@ h3 {
   color: white;
   font-size: 0.95rem;
   font-weight: 700;
-}
-
-.empty {
-  display: grid;
-  align-content: center;
-  min-block-size: 70dvb;
-  padding-block: 3rem;
-}
-
-.empty .eyebrow {
-  color: var(--accent);
 }
 
 .site-footer {
@@ -309,4 +297,150 @@ h3 {
 
 .empty-list h2 {
   margin-block-end: 0.4rem;
+}
+
+.apply-jump {
+  display: inline-block;
+  margin-block-start: 1.25rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--band);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.apply-jump:focus-visible,
+.apply-form :is(input, textarea, button):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.apply-section {
+  padding-block-end: 3.5rem;
+}
+
+.apply-form {
+  max-inline-size: 36rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin-block-end: 1.25rem;
+}
+
+.field label {
+  font-weight: 700;
+}
+
+.req {
+  margin-inline-start: 0.35rem;
+  color: #9f1239;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.hint,
+.apply-closed,
+.apply-success p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.apply-form input,
+.apply-form textarea,
+.apply-submit {
+  font: inherit;
+  font-size: 1rem;
+}
+
+.apply-form input,
+.apply-form textarea {
+  inline-size: 100%;
+  min-block-size: 3rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #8d8476;
+  border-radius: 0.7rem;
+  background: white;
+  color: var(--ink);
+}
+
+.apply-form textarea {
+  min-block-size: 7rem;
+  resize: vertical;
+}
+
+.apply-form :is(input, textarea):user-invalid {
+  border-color: #9f1239;
+  background: #fff1f2;
+}
+
+.apply-form :is(input, textarea):user-valid {
+  border-color: var(--accent);
+}
+
+.field-error {
+  display: none;
+  margin: 0;
+  color: #9f1239;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.apply-form :is(input, textarea):user-invalid + .field-error,
+.field-error.is-server {
+  display: block;
+}
+
+.form-status {
+  margin: 0 0 0.8rem;
+  color: #9f1239;
+  font-weight: 700;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+.apply-submit {
+  min-block-size: 3rem;
+  padding: 0.75rem 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.apply-submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.apply-success {
+  display: grid;
+  gap: 0.4rem;
+  max-inline-size: 36rem;
+  padding: 1.2rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--card);
+}
+
+.apply-success:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.apply-closed {
+  max-inline-size: 36rem;
+}
+
+@media (pointer: coarse) {
+  .apply-form input,
+  .apply-submit {
+    min-block-size: 3.25rem;
+  }
 }

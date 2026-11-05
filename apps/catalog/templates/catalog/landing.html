@@ -1,4 +1,5 @@
 {% extends "catalog/base.html" %}
+{% load static %}
 
 {% block title %}{{ course.title }} · 교육 소개{% endblock %}
 
@@ -6,6 +7,7 @@
   <nav class="header-links">
     <a class="header-link" href="{% url 'course-list' %}">목록</a>
     <a class="header-link" href="#curriculum-heading">커리큘럼</a>
+    <a class="header-link" href="#apply-heading">신청</a>
   </nav>
 {% endblock %}
 
@@ -13,12 +15,13 @@
   <section class="hero-band">
     <div class="landing">
       <div class="intro">
-        <div class="intro-copy">
+        <div>
           <p class="eyebrow">{{ course.get_recruitment_status_display }}</p>
           <h1>{{ course.title }}</h1>
           <p class="summary">{{ course.summary }}</p>
           <p class="description">{{ course.description }}</p>
           <p class="facts">{{ course.period_label }} · 커리큘럼 {{ course.curriculum.all|length }}단계</p>
+          <a class="apply-jump" href="#apply-heading">이 교육 신청하기</a>
         </div>
         <figure class="hero">
           {% if course.hero_image %}
@@ -59,4 +62,109 @@
       </ol>
     </div>
   </section>
+  <section class="apply-section" aria-labelledby="apply-heading">
+    <div class="landing">
+      <div class="section-heading">
+        <h2 id="apply-heading">수강 신청</h2>
+        <p>{{ course.title }}에 신청합니다.</p>
+      </div>
+      {% if can_apply %}
+        <form
+          id="application-form"
+          class="apply-form"
+          method="post"
+          action="{% url 'application-list' %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="course" value="{{ course.pk }}">
+          <div class="field">
+            <label for="applicant-name">이름 <span class="req">필수</span></label>
+            <input
+              id="applicant-name"
+              name="name"
+              type="text"
+              maxlength="100"
+              autocomplete="name"
+              enterkeyhint="next"
+              required
+              aria-errormessage="applicant-name-error"
+            >
+            <p id="applicant-name-error" class="field-error" data-client-message="이름을 입력해 주세요.">
+              이름을 입력해 주세요.
+            </p>
+          </div>
+          <div class="field">
+            <label for="applicant-email">이메일 <span class="req">필수</span></label>
+            <p id="email-hint" class="hint">예: name@example.com</p>
+            <input
+              id="applicant-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              enterkeyhint="next"
+              required
+              aria-describedby="email-hint"
+              aria-errormessage="applicant-email-error"
+            >
+            <p
+              id="applicant-email-error"
+              class="field-error"
+              data-client-message="이메일 형식이 올바르지 않습니다."
+            >
+              이메일 형식이 올바르지 않습니다.
+            </p>
+          </div>
+          <div class="field">
+            <label for="applicant-address">주소 <span class="req">필수</span></label>
+            <textarea
+              id="applicant-address"
+              name="address"
+              autocomplete="street-address"
+              enterkeyhint="next"
+              required
+              aria-errormessage="applicant-address-error"
+            ></textarea>
+            <p id="applicant-address-error" class="field-error" data-client-message="주소를 입력해 주세요.">
+              주소를 입력해 주세요.
+            </p>
+          </div>
+          <div class="field">
+            <label for="applicant-contact-date">연락 가능 날짜 <span class="req">필수</span></label>
+            <p id="contact-date-hint" class="hint">연락받을 수 있는 날짜를 선택해 주세요.</p>
+            <input
+              id="applicant-contact-date"
+              name="contact_date"
+              type="date"
+              enterkeyhint="done"
+              required
+              aria-describedby="contact-date-hint"
+              aria-errormessage="applicant-contact-date-error"
+            >
+            <p
+              id="applicant-contact-date-error"
+              class="field-error"
+              data-client-message="연락 가능 날짜를 입력해 주세요."
+            >
+              연락 가능 날짜를 입력해 주세요.
+            </p>
+          </div>
+          <p id="application-status" class="form-status" role="status"></p>
+          <button class="apply-submit" type="submit">신청하기</button>
+        </form>
+      {% elif course.recruitment_status == "upcoming" %}
+        <p class="apply-closed">모집 예정입니다. 신청은 모집이 시작되면 받을 수 있습니다.</p>
+      {% else %}
+        <p class="apply-closed">모집이 마감되어 신청할 수 없습니다.</p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  {% if can_apply %}
+    <script src="{% static 'js/application-form.js' %}" type="module"></script>
+  {% endif %}
 {% endblock %}
