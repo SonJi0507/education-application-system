@@ -1,6 +1,28 @@
+from typing import Self
+
 from django.db import models
+from django.db.models import Q
 
 from apps.common.models import TimeMixinModel
+
+
+class ApplicationQuerySet(models.QuerySet["Application"]):
+    def filtered(self, status: str = "", query: str = "") -> Self:
+        queryset = self
+        if status in Application.Status.values:
+            queryset = queryset.filter(status=status)
+        cleaned = query.strip()
+        if cleaned:
+            queryset = queryset.filter(Q(name__icontains=cleaned) | Q(email__icontains=cleaned))
+        return queryset
+
+
+class ApplicationManager(models.Manager["Application"]):
+    def get_queryset(self) -> ApplicationQuerySet:
+        return ApplicationQuerySet(self.model, using=self._db)
+
+    def filtered(self, status: str = "", query: str = "") -> ApplicationQuerySet:
+        return self.get_queryset().filtered(status=status, query=query)
 
 
 class Application(TimeMixinModel):
@@ -27,6 +49,8 @@ class Application(TimeMixinModel):
     )
     confirmation_sent_at = models.DateTimeField("접수 확인 메일 시각", null=True, blank=True)
     contact_notice_sent_at = models.DateTimeField("연락 안내 메일 시각", null=True, blank=True)
+
+    objects = ApplicationManager()
 
     class Meta:
         verbose_name = "신청"

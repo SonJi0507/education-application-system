@@ -19,6 +19,7 @@ def test_공개된_교육_중_가장_먼저_만든_교육을_반환한다():
     # Assert
     assert isinstance(Course.objects.get_queryset(), CourseQuerySet)
     assert featured == published
+    assert featured is not None
     assert [item.title for item in featured.curriculum.all()] == ["개발 환경"]
 
 
@@ -44,6 +45,7 @@ def test_대표_교육은_커리큘럼을_미리_가져온다(django_assert_num_
     featured = Course.objects.featured_course()
 
     # Assert
+    assert featured is not None
     with django_assert_num_queries(0):
         titles = [item.title for item in featured.curriculum.all()]
     assert titles == ["개발 환경"]

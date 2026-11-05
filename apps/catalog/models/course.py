@@ -1,18 +1,27 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Self
+
 from django.db import models
 
 from apps.common.models import TimeMixinModel
 
+if TYPE_CHECKING:
+    from django.db.models.fields.related_descriptors import RelatedManager
 
-class CourseQuerySet(models.QuerySet):
-    def featured(self):
+    from apps.catalog.models.curriculum_item import CurriculumItem
+
+
+class CourseQuerySet(models.QuerySet["Course"]):
+    def featured(self) -> Self:
         return self.filter(is_published=True).prefetch_related("curriculum").order_by("id")
 
 
-class CourseManager(models.Manager):
-    def get_queryset(self):
+class CourseManager(models.Manager["Course"]):
+    def get_queryset(self) -> CourseQuerySet:
         return CourseQuerySet(self.model, using=self._db)
 
-    def featured_course(self):
+    def featured_course(self) -> Course | None:
         return self.get_queryset().featured().first()
 
 
@@ -24,6 +33,7 @@ class Course(TimeMixinModel):
     hero_image = models.ImageField("대표 이미지", upload_to="courses/", blank=True)
     hero_alt = models.CharField("대표 이미지 설명", max_length=200, blank=True)
     is_published = models.BooleanField("공개", default=False)
+    curriculum: RelatedManager[CurriculumItem]
 
     objects = CourseManager()
 
