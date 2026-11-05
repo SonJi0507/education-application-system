@@ -1,0 +1,13 @@
+.venv
+.pytest_cache
+.git
+.idea
+.grok
+__pycache__
+*.py[cod]
+.env
+media
+staticfiles
+docs
+*.md
+.DS_Store

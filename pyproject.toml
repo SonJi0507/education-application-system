@@ -1,0 +1,59 @@
+[project]
+name = "course-registration-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "sonji0507", email = "jhson0507@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2,<5.3",
+    "django-environ>=0.14.0",
+    "djangorestframework>=3.18,<4",
+    "gunicorn>=26.2.0",
+    "pillow>=13.0.0",
+    "psycopg2-binary>=2.9.13",
+    "whitenoise>=6.12.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "configs.settings"
+
+[tool.coverage.run]
+source = ["configs"]
+omit = ["*/migrations/*", "*/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.ruff]
+line-length = 100
+src = ["configs"]
+extend-exclude = ["**/migrations"]
+
+[tool.ruff.lint]
+select = ["F", "E", "B", "UP", "RUF", "I", "N", "SIM", "C90"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["configs"]
+
+[tool.ty.src]
+exclude = ["**/migrations"]
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=8.0.0",
+    "django-extensions>=4.1",
+    "django-stubs>=6.1.2",
+    "djangorestframework-stubs>=3.18.2",
+    "pre-commit>=4.7.0",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "pytest-django>=4.14.0",
+    "ruff>=0.17.3",
+    "ty>=0.0.97",
+]
