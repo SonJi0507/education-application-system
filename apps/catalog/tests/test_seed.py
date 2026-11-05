@@ -7,7 +7,7 @@ from apps.catalog.models import Course, CurriculumItem
 
 
 @pytest.mark.django_db
-def test_seed_fills_each_model_once():
+def test_시드는_교육_커리큘럼_신청을_한_번씩만_넣는다():
     # Arrange
     slugs = [course.slug for course in COURSES]
 
