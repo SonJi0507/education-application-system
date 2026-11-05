@@ -41,6 +41,7 @@ if (form instanceof HTMLFormElement) {
     try {
       const response = await fetch(form.action, {
         method: "POST",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrfToken(form),
@@ -66,6 +67,10 @@ if (form instanceof HTMLFormElement) {
 }
 
 function csrfToken(form) {
+  const match = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]*)/);
+  if (match) {
+    return decodeURIComponent(match[1]);
+  }
   const input = form.querySelector("[name='csrfmiddlewaretoken']");
   return input instanceof HTMLInputElement ? input.value : "";
 }
