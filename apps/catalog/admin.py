@@ -10,7 +10,7 @@ class CurriculumItemInline(admin.TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title", "slug", "is_published", "updated_at")
-    list_filter = ("is_published",)
+    list_display = ("title", "slug", "recruitment_status", "starts_on", "ends_on", "is_published")
+    list_filter = ("is_published", "recruitment_status")
     search_fields = ("title", "summary")
     inlines = (CurriculumItemInline,)

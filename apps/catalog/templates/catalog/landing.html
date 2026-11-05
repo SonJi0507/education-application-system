@@ -1,0 +1,62 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ course.title }} · 교육 소개{% endblock %}
+
+{% block header_links %}
+  <nav class="header-links">
+    <a class="header-link" href="{% url 'course-list' %}">목록</a>
+    <a class="header-link" href="#curriculum-heading">커리큘럼</a>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <section class="hero-band">
+    <div class="landing">
+      <div class="intro">
+        <div class="intro-copy">
+          <p class="eyebrow">{{ course.get_recruitment_status_display }}</p>
+          <h1>{{ course.title }}</h1>
+          <p class="summary">{{ course.summary }}</p>
+          <p class="description">{{ course.description }}</p>
+          <p class="facts">{{ course.period_label }} · 커리큘럼 {{ course.curriculum.all|length }}단계</p>
+        </div>
+        <figure class="hero">
+          {% if course.hero_image %}
+            <img
+              src="{{ course.hero_image.url }}"
+              alt="{{ course.hero_alt|default:course.title }}"
+              width="1200"
+              height="675"
+              fetchpriority="high"
+            >
+          {% else %}
+            <div class="hero-fallback" role="img" aria-label="{{ course.hero_alt|default:'대표 이미지 없음' }}">
+              <span aria-hidden="true">{{ course.title }}</span>
+            </div>
+          {% endif %}
+        </figure>
+      </div>
+    </div>
+  </section>
+  <section class="curriculum-section" aria-labelledby="curriculum-heading">
+    <div class="landing">
+      <div class="section-heading">
+        <h2 id="curriculum-heading">커리큘럼</h2>
+        <p>위에 있는 단계부터 순서대로 진행합니다.</p>
+      </div>
+      <ol class="curriculum">
+        {% for item in course.curriculum.all %}
+          <li>
+            <p class="step">{{ item.position }}</p>
+            <div>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.body }}</p>
+            </div>
+          </li>
+        {% empty %}
+          <li class="curriculum-empty">등록된 커리큘럼이 없습니다.</li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+{% endblock %}

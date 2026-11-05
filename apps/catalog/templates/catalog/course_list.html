@@ -1,0 +1,38 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}교육 목록{% endblock %}
+
+{% block content %}
+  <section class="hero-band">
+    <div class="landing">
+      <p class="eyebrow">모집 상태와 교육 기간</p>
+      <h1>교육 목록</h1>
+      <p class="summary">어떤 교육이 있는지 확인하고, 원하는 교육의 소개를 열어 보세요.</p>
+    </div>
+  </section>
+  <section class="curriculum-section">
+    <div class="landing">
+      {% if courses %}
+        <ul class="course-list">
+          {% for course in courses %}
+            <li>
+              <a class="course-card" href="{% url 'course-detail' course.slug %}">
+                <p class="status status-{{ course.recruitment_status }}">
+                  {{ course.get_recruitment_status_display }}
+                </p>
+                <h2>{{ course.title }}</h2>
+                <p>{{ course.summary }}</p>
+                <p class="period">{{ course.period_label }}</p>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="empty-list">
+          <h2>공개된 교육이 없습니다</h2>
+          <p>교육이 공개되면 이곳에 목록이 표시됩니다.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

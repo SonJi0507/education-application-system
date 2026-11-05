@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -34,6 +34,9 @@ class CourseSeed:
     summary: str
     description: str
     hero_alt: str
+    recruitment_status: str
+    starts_on: date
+    ends_on: date
     is_published: bool
     curriculum: tuple[CurriculumSeed, ...]
     applications: tuple[ApplicationSeed, ...]
@@ -48,6 +51,9 @@ COURSES = (
             "변수, 조건, 반복, 함수를 익히고 마지막에 신청 목록을 출력하는 프로그램을 만듭니다."
         ),
         hero_alt="노트북으로 파이썬 코드를 작성하는 수업 장면",
+        recruitment_status=Course.RecruitmentStatus.OPEN,
+        starts_on=date(2026, 11, 2),
+        ends_on=date(2026, 12, 18),
         is_published=True,
         curriculum=(
             CurriculumSeed(
@@ -72,6 +78,9 @@ COURSES = (
         summary="소개 페이지와 신청 폼을 갖춘 웹 서비스를 만듭니다.",
         description="HTML로 교육 소개를 구성하고, Django로 신청을 저장하고 상태를 바꿉니다.",
         hero_alt="화면에 교육 소개 페이지가 열려 있는 수업 장면",
+        recruitment_status=Course.RecruitmentStatus.UPCOMING,
+        starts_on=date(2027, 1, 5),
+        ends_on=date(2027, 2, 13),
         is_published=True,
         curriculum=(
             CurriculumSeed(
@@ -118,6 +127,9 @@ class Command(BaseCommand):
                     "summary": course_seed.summary,
                     "description": course_seed.description,
                     "hero_alt": course_seed.hero_alt,
+                    "recruitment_status": course_seed.recruitment_status,
+                    "starts_on": course_seed.starts_on,
+                    "ends_on": course_seed.ends_on,
                     "is_published": course_seed.is_published,
                 },
             )

@@ -1,3 +1,5 @@
+from datetime import date
+
 import factory
 from factory.django import DjangoModelFactory
 
@@ -12,6 +14,9 @@ class CourseFactory(DjangoModelFactory):
     slug = factory.Sequence(lambda n: f"course-{n}")
     summary = "한 줄 소개"
     description = "설명"
+    recruitment_status = Course.RecruitmentStatus.OPEN
+    starts_on = date(2026, 11, 2)
+    ends_on = date(2026, 12, 11)
     is_published = False
 
 
