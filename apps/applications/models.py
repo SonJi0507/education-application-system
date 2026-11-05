@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Self
 
 from django.db import models
@@ -16,6 +17,9 @@ class ApplicationQuerySet(models.QuerySet["Application"]):
             queryset = queryset.filter(Q(name__icontains=cleaned) | Q(email__icontains=cleaned))
         return queryset
 
+    def due_for_contact_notice(self, today: date) -> Self:
+        return self.filter(contact_date__lte=today, contact_notice_sent_at__isnull=True)
+
 
 class ApplicationManager(models.Manager["Application"]):
     def get_queryset(self) -> ApplicationQuerySet:
@@ -23,6 +27,9 @@ class ApplicationManager(models.Manager["Application"]):
 
     def filtered(self, status: str = "", query: str = "") -> ApplicationQuerySet:
         return self.get_queryset().filtered(status=status, query=query)
+
+    def due_for_contact_notice(self, today: date) -> ApplicationQuerySet:
+        return self.get_queryset().due_for_contact_notice(today)
 
 
 class Application(TimeMixinModel):

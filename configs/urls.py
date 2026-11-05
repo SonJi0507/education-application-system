@@ -1,6 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import URLPattern, URLResolver, path
+from django.urls import URLPattern, URLResolver, include, path
 
 from configs import settings
 
@@ -10,6 +10,7 @@ admin.site.index_title = "교육과 신청"
 
 urlpatterns: list[URLPattern | URLResolver] = [
     path("admin/", admin.site.urls),
+    path("api/", include("apps.applications.urls")),
 ]
 
 if settings.DEBUG:
