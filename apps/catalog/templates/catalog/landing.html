@@ -4,11 +4,9 @@
 {% block title %}{{ course.title }} · 교육 소개{% endblock %}
 
 {% block header_links %}
-  <nav class="header-links">
-    <a class="header-link" href="{% url 'course-list' %}">목록</a>
-    <a class="header-link" href="#curriculum-heading">커리큘럼</a>
-    <a class="header-link" href="#apply-heading">신청</a>
-  </nav>
+  <a class="header-link" href="{% url 'course-list' %}">목록</a>
+  <a class="header-link" href="#curriculum-heading">커리큘럼</a>
+  <a class="header-link" href="#apply-heading">신청</a>
 {% endblock %}
 
 {% block content %}

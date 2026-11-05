@@ -56,6 +56,24 @@ def test_교육_목록에_모집_상태와_기간을_보여준다(client):
 
 
 @pytest.mark.django_db
+def test_목록과_상세에서_관리자_화면으로_갈_수_있다(client):
+    # Arrange
+    CourseFactory(title="파이썬 입문", slug="python-basics", is_published=True)
+    admin_url = reverse("admin:index")
+
+    # Act
+    course_list = client.get(reverse("course-list"))
+    course_detail = client.get(reverse("course-detail", args=["python-basics"]))
+
+    # Assert
+    for response in (course_list, course_detail):
+        content = response.content.decode()
+        assert response.status_code == 200
+        assert f'href="{admin_url}"' in content
+        assert ">관리자</a>" in content
+
+
+@pytest.mark.django_db
 def test_공개된_교육이_없으면_목록에_안내_문구를_보여준다(client):
     # Arrange
     CourseFactory(is_published=False)
