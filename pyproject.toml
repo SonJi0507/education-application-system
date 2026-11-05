@@ -22,9 +22,10 @@ package = false
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "configs.settings"
+testpaths = ["apps"]
 
 [tool.coverage.run]
-source = ["configs"]
+source = ["configs", "apps"]
 omit = ["*/migrations/*", "*/tests/*"]
 
 [tool.coverage.report]
@@ -32,14 +33,14 @@ show_missing = true
 
 [tool.ruff]
 line-length = 100
-src = ["configs"]
+src = ["configs", "apps"]
 extend-exclude = ["**/migrations"]
 
 [tool.ruff.lint]
 select = ["F", "E", "B", "UP", "RUF", "I", "N", "SIM", "C90"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["configs"]
+known-first-party = ["configs", "apps"]
 
 [tool.ty.src]
 exclude = ["**/migrations"]
