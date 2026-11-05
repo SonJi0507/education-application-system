@@ -1,15 +1,16 @@
-.PHONY: help setup sync hooks env db migrate superuser run test lint down
+.PHONY: help setup sync hooks env db migrate seed superuser run test lint down
 
 help:
 	@printf '%s\n' \
 		'make setup      처음 한 번. 의존성, git hook, Postgres, 마이그레이션, 샘플 데이터' \
+		'make seed       테스트 데이터. DB를 켜고 마이그레이션한 뒤 교육, 커리큘럼, 신청을 넣습니다' \
 		'make superuser  관리자 계정. DB를 켜고 마이그레이션한 뒤 아이디와 비밀번호를 묻습니다' \
 		'make run        개발 서버 http://127.0.0.1:8000/' \
 		'make test       pytest. Postgres가 꺼져 있으면 켭니다' \
 		'make lint       ruff와 ty. 데이터베이스는 쓰지 않습니다' \
 		'make down       Postgres 중지'
 
-setup: sync hooks env db migrate
+setup: sync hooks env db migrate seed
 
 sync:
 	uv sync
@@ -25,6 +26,9 @@ db: env
 
 migrate: env
 	uv run python manage.py migrate
+
+seed: db migrate
+	uv run python manage.py seed
 
 superuser: db migrate
 	uv run python manage.py createsuperuser
