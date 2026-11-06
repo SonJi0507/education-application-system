@@ -72,5 +72,4 @@ make down       # Postgres 중지
 
 ## 첨부 문서
 
-- [구현 과제](docs/plan.md)
 - [AI 코딩 보조 도구 사용 내역과 활용 이유](docs/ai-usage.md)
